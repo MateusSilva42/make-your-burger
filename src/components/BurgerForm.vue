@@ -2,7 +2,7 @@
     <div>
         <p>Componente de Mensagem</p>
     </div>
-    <div>
+    <div id="form-container">
         <form id="burger-form">
             <div class="input-container">
                 <label for="name">Nome do cliente:</label>
@@ -11,22 +11,22 @@
             <div class="input-container">
                 <label for="bread">Escolha o pão:</label>
                 <select id="bread" name="bread" v-model="bread">
-                    <option value="">Selecione o seu pão</option>
-                    <option value="integral">Integral</option>
+                    <option value="" selected disabled>Selecione o seu pão</option>
+                    <option v-for="bread in breadList" :key="bread.id" :value="bread.tipo">{{ bread.tipo }}</option>
                 </select>
             </div>
             <div class="input-container">
                 <label for="meat">Escolha a carne do seu burger:</label>
                 <select id="meat" name="meat" v-model="meat">
                     <option value="">Selecione o tipo de carne</option>
-                    <option value="maminha">Maminha</option>
+                    <option v-for="meat in meatList" :key="meat.id" :value="meat.tipo">{{ meat.tipo }}</option>
                 </select>
             </div>
             <div class="input-container">
                 <label id="opt-title" for="optionals">Selecione os opcionais:</label>
-                <div id="opt-container" class="checkbox-container">
-                    <input type="checkbox" name="optionals" v-model="optionals" value="salame">
-                    <span>Salame</span>
+                <div id="opt-container" class="checkbox-container" v-for="opt in optionalList" :key="opt.id">
+                    <input type="checkbox" name="optionals" v-model="optionals" :value="opt.tipo">
+                    <span>{{opt.tipo}}</span>
                 </div>
             </div>
             <div class="input-container">
@@ -44,17 +44,42 @@ export default {
   },
   data() {
     return {
-      //
-    };
+        breadList: null,
+        meatList: null,
+        optionalList: null,
+        bread: null,
+        meat: null,
+        optionals: [],
+        name: null,   
+        status: 'Solicitado',
+        msg: null
+     };
   },
   methods: {
-    //
+    async getIngredients(){
+        const req = await fetch('http://localhost:3000/ingredientes')
+        const data = await req.json()
+
+        this.breadList = data.paes
+        this.meatList = data.carnes
+        this.optionalList = data.opcionais
+    }
   },
+  mounted(){
+      this.getIngredients()
+  }
 };
 </script>
 
 
 <style scoped>
+
+    #form-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50px;
+    }
     #burger-form{
         max-width: 400px;
         margin: 0 auto;
