@@ -37,6 +37,7 @@
 
 .main-container{
   min-height: 250px;
+  margin: 50px;
 }
 
 h1{
