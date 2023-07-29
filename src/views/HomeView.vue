@@ -4,16 +4,20 @@
     
     <h1> Monte seu Burger: </h1>
    
-    <p>formulário</p>
+    <BurgerForm />
   </div>
 </template>
 
 <script scoped>
-import Banner from "../components/banner.vue";
+
+import Banner from '../components/Banner.vue'
+import BurgerForm from '../components/BurgerForm.vue'
+
 export default {
   name: "HomeView",
   components: {
-    Banner
+    Banner,
+    BurgerForm
   },
   data() {
     return {
